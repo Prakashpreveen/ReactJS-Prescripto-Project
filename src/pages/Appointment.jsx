@@ -6,10 +6,10 @@ import { assets } from "../assets/assets";
 const Appointment = () => {
   const [docInfo, setDocInfo] = useState(null); // To store doctor info
   const [docSlots, setDocSlots] = useState([]); // To store doctor slots
-  const [slotIndex, setSlotIndex] = useState(0);
-  const [slotTime, setSlotTime] = useState("");
+  const [slotIndex, setSlotIndex] = useState(0); // TO store slot index
+  const [slotTime, setSlotTime] = useState(""); // To store slot time
 
-  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]; // to Store Week Days Name
 
   const { doctors, currencySymbol } = useContext(AppContext); // To get all doctor info
   const { docId } = useParams(); // TO get particular doctor id using useParams() hook
@@ -20,6 +20,7 @@ const Appointment = () => {
     setDocInfo(docInfo);
   };
 
+  // ASYNC FUNCTION TO GET AND SET setDocSlots:
   const getAvailableSlots = async () => {
     setDocSlots([]);
     // Getting Current Date:
@@ -71,13 +72,14 @@ const Appointment = () => {
     fetchDocInfo();
   }, [docId, doctors]);
 
+  // EXECUTE THE getAvailableSlots() FUNCTION WITH DEPENDENCY USING USEEFECT():
   useEffect(() => {
     getAvailableSlots();
   }, [docInfo]);
 
-  useEffect(() => {
-    console.log(docSlots);
-  }, [docSlots]);
+  // useEffect(() => {
+  //   console.log(docSlots);
+  // }, [docSlots]);
 
   return (
     //IF docInfo IS AVAILABLE SHOW REST;
@@ -149,6 +151,27 @@ const Appointment = () => {
                 </div>
               ))}
           </div>
+
+          {/* ----------- TIME SLOTS ----------- */}
+          <div className="flex items-center gap-3 w-full overflow-x-scroll mt-4">
+            {docSlots.length &&
+              docSlots[slotIndex].map((item, index) => (
+                <p
+                  onClick={() => setSlotTime(item.time)}
+                  key={index}
+                  className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
+                    item.time === slotTime
+                      ? "bg-primary text-white"
+                      : "text-gray-400 border border-gray-300"
+                  }`}
+                >
+                  {item.time.toLowerCase()}
+                </p>
+              ))}
+          </div>
+          <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">
+            Book an Appointment
+          </button>
         </div>
       </div>
     )
