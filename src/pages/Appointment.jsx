@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
+import RelatedDoctors from "../components/RelatedDoctors";
 
 const Appointment = () => {
   const [docInfo, setDocInfo] = useState(null); // To store doctor info
@@ -173,6 +174,9 @@ const Appointment = () => {
             Book an Appointment
           </button>
         </div>
+
+        {/* ---------------------- LISTING RELATED DOCTORS ---------------------- */}
+        <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
       </div>
     )
   );
